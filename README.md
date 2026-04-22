@@ -1,3 +1,13 @@
+supabase.com  relational
+appwrite.io
+aws
+apn apple push notification .. for ios
+create ml
+
+Firebase Cloud Fire store - no sql data base
+fcm-clode messaging -- bkash daraz jey regular morning e notification padhay oigula
+
+
 ## Native firebase setup
 
 firebase>>Go to console>>Create a new Firebase project>>Done>>Setting >>General>>Android
@@ -34,5 +44,18 @@ update your app minSdk = 21 (app level gradle)
 if kts/globby version need upgrade then upgrade it 
 
 
+## ios setup (mac device must needed)
+
+firebase>>Go to console>>Create a new Firebase project>>Done>>Setting >>General>>ios
+
+Android Studio >>Project >> ios >> Mouse right click >> Go in last option >>Flutter(Open ios/macOS module in Xcode)
+
+
+Xcode>>Runner >>identify>>Bundle identifier || Apple Bundle id for firebase
+
+Download config file >> GoogleService info plist >> copy and drag it in Xcode >>Runner >>Runner >>paste
+
+## flutter fire 
+firebase CLI reference
 
 
