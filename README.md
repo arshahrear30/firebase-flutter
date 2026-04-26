@@ -57,5 +57,21 @@ Download config file >> GoogleService info plist >> copy and drag it in Xcode >>
 
 ## flutter fire 
 firebase CLI reference
+fvm -- flutter version manager
 
+windows : chocolatey command line tool
+Mac : homebrew mac command line tool
 
+install the Firebase CLI. ::click
+Set up or update the CLI :click  https://firebase.google.com/docs/cli#setup_update_cli
+Windows ::select
+
+install node.js from this page link...https://nodejs.org/en
+standalone binary >>Firebase CLI binary for Windows ::install :more info : run anyway ::
+
+node.js ta o download koira raktey paro .. 
+
+old use kora hoito--Realtime Database application theke read kortey cailey :  pub.dev theke firebase_database
+https://firebase.google.com/docs/database/flutter/start
+
+latest use kora hoy ata best --Firestore Database/Cloud Database/Document base no SQL  --- 
