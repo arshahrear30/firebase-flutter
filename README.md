@@ -75,3 +75,23 @@ old use kora hoito--Realtime Database application theke read kortey cailey :  pu
 https://firebase.google.com/docs/database/flutter/start
 
 latest use kora hoy ata best --Firestore Database/Cloud Database/Document base no SQL  --- 
+
+
+## FCM firebase cloud messaging
+
+2 way tey send kora jay .. 1. cloud console .. 2. personal Server (HTTP/Admin SDK)
+ ei 2 method diya request kora jay fcm er jonno ei msg gula FCM backend e jaibey .er por device SDK maintain koira send hoibo ..
+
+Android er jonno direct fcm 
+Apple er jonno APNs - Apple push notification service certificate antey hoibo .
+Web push
+
+## fcm setup 
+
+Firebase console >> Product categories >>DevOps and engagement>>Engagement>>Messaging >>>>ei khan theke push notification create korar option peye jaibo 
+
+https://pub.dev/ : firebase_messaging
+
+firebase_messaging: ^16.2.0  pubspec.yaml e pub get korlam ..
+
+take a permission for message receiving 
