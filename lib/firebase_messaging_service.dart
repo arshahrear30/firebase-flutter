@@ -6,39 +6,39 @@ class FirebaseMessagingService {
   Future<void> requestPermission() async {
     await _firebaseMessaging.requestPermission(
       sound: true,
-      badge: true, //notification er pashe akta badge icon show korbe ..
+      badge: true, //notification এর পাশে একটা badge icon show করবে .
       alert: true,
       announcement: false,
-      criticalAlert: false, //eta diley porey app e explain kortey hoitey pare.
+      criticalAlert: false, //এটা দিলে পরে app-এ explain করতে হইতে পারে।
       provisional: false,
     );
   }
 
   Future<void> initialize() async {
     await requestPermission(); //https://firebase.google.com/docs/cloud-messaging/flutter/receive-messages
-    //App 3 ta step e thakey ..
-    //1.Normal/Alive/ON-Pause ... app running raikka amra home button e click koira app close kori
+    //App 3 টা step-এ থাকে ..
+    //১. Normal/Alive/ON-Pause ... app running রাইখা আমরা home button-এ click কইরা app close করি
     FirebaseMessaging.onMessage.listen((message) {
       print(message.notification?.title);
       print(message.notification?.body);
       print(message.data);
     });
 
-    //2.Open /Resume -- app open acey / app calitechi
+    //২. Open / Resume -- app open আছে / app চালাইতেছি
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       print(message.notification?.title);
       print(message.notification?.body);
       print(message.data);
     });
 
-    //3.Dead / ON-Terminated
+    //৩. Dead / ON-Terminated
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
   }
 
   Future<void> getFCMToken() async {
     final token = await _firebaseMessaging.getToken();
     print(token);
-  } //ei token ta 10-15 day por refresh hoibo ..tai onRefresh method create korbo
+  } //এই token টা ১০-১৫ day পর refresh হইবো .. তাই onRefresh method create করবো
 
 
   Future<void> onRefresh(Function(String) onTokenRefresh) async {
@@ -47,7 +47,7 @@ class FirebaseMessagingService {
     });
   }
 
-  //kono ekta topic e subscribe na kora porjonto ei message ta asbey
+  //কোনো একটা topic-এ subscribe না করা পর্যন্ত এই message টা আসবে
   Future<void> subscribeToTopic(String topic) async {
     await _firebaseMessaging.subscribeToTopic(topic);
   }
@@ -59,5 +59,5 @@ class FirebaseMessagingService {
 
 }
 
-//App Terminated thakley ektu high level code liktey hoibo ..
+//App Terminated থাকলে একটু high level code লিখতে হইবো ..
 Future<void> handleBackgroundMessage(RemoteMessage message) async {}

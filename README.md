@@ -5,7 +5,7 @@ apn apple push notification .. for ios
 create ml
 
 Firebase Cloud Fire store - no sql data base
-fcm-clode messaging -- bkash daraz jey regular morning e notification padhay oigula
+fcm-clode messaging -- bkash daraz যে regular morning-এ notification পাঠায় ওইগুলা।
 
 
 ## Native firebase setup
@@ -20,13 +20,13 @@ namespace = "com.tfs.firebase_flutter"  <-package name  >>
 we copy this package name .. and paste it into Register app>>Android package name>>Resister >>
 Download >> google-services.json >>android >>app>>paste >>
 
-android >> app er vitor jei gradle ta acey oita app level gradle(build.gradle.kts)
-android >> gradle er vitor jei gradle ta acey oita project level gradle(build.gradle.kts)
+android>> app এর ভিতর যেই gradle টা আছে ওইটা app level gradle (build.gradle.kts)
+android >> gradle এর ভিতর যেই gradle টা আছে ওইটা project level gradle (build.gradle.kts)
 
 3 Add Firebase SDK >> 
 Next >> Continue to the console
 
-app level gradle  dependencies {  er vitor multidex add korbo .
+app level gradle  dependencies { এর ভিতর multidex add করবো।.
 
 ## flutter e firebase add
 search >> firebase core package >> copy and paste on pubspec.yaml in 36 line under this word (  cupertino_icons: ^1.0.8)
@@ -69,29 +69,33 @@ Windows ::select
 install node.js from this page link...https://nodejs.org/en
 standalone binary >>Firebase CLI binary for Windows ::install :more info : run anyway ::
 
-node.js ta o download koira raktey paro .. 
+node.js টা ও download কইরা রাখতে পারো
 
-old use kora hoito--Realtime Database application theke read kortey cailey :  pub.dev theke firebase_database
+old use করা হইতো--Realtime Database application থেকে read করতে চাইলে : pub.dev থেকে firebase_database
 https://firebase.google.com/docs/database/flutter/start
 
-latest use kora hoy ata best --Firestore Database/Cloud Database/Document base no SQL  --- 
+latest use করা হয় এটা best --Firestore Database/Cloud Database/Document base no SQL  --- 
+
+cloud firestore Flutterfire :: https://firebase.flutter.dev/docs/firestore/usage/
+
+এই context গুলা পড়ে পড়ে শিখলে সবচেয়ে better :❇️:  https://firebase.google.com/docs/firestore/query-data/listen
+
 
 
 ## FCM firebase cloud messaging
 
-2 way tey send kora jay .. 1. cloud console .. 2. personal Server (HTTP/Admin SDK)
- ei 2 method diya request kora jay fcm er jonno ei msg gula FCM backend e jaibey .er por device SDK maintain koira send hoibo ..
+2 way-তে send করা যায় .. ১.cloud console .. ২. personal Server (HTTP/Admin SDK)
+এই ২ method দিয়া request করা যায় fcm এর জন্য এই msg গুলা FCM backend-এ যাইবে .. এরপর device SDK maintain কইরা send হইবো ..
 
-Android er jonno direct fcm 
-Apple er jonno APNs - Apple push notification service certificate antey hoibo .
+Android এর জন্য direct fcm Apple এর জন্য APNs - Apple push notification service certificate আনতে হইবো .
 Web push
 
 ## fcm setup 
 
-Firebase console >> Product categories >>DevOps and engagement>>Engagement>>Messaging >>>>ei khan theke push notification create korar option peye jaibo 
+Firebase console >> Product categories >>DevOps and engagement>>Engagement>>Messaging >>>>এইখান থেকে push notification create করার option পেয়ে যাইবো।
 
 https://pub.dev/ : firebase_messaging
 
-firebase_messaging: ^16.2.0  pubspec.yaml e pub get korlam ..
+firebase_messaging: ^16.2.0  pubspec.yaml e pub get করলাম। ..
 
 take a permission for message receiving 
