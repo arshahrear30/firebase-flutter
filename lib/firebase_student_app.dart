@@ -3,12 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-class FirebaseStudentApp extends StatelessWidget {
+class FirebaseStudentApp extends StatelessWidget { //root widget (entry point)
   const FirebaseStudentApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return const MaterialApp(//MaterialApp দিয়ে Material Design theme সেট করে, এবং StudentListকে home হিসেবে দেয়
       home: StudentList(),
     );
   }
@@ -21,21 +21,21 @@ class StudentList extends StatefulWidget {
   State<StudentList> createState() => StudentListState();
 }
 
-class StudentListState extends State<StudentList> {
-  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+class StudentListState extends State<StudentList> { //StudentListState -- Data Fetching Strategy
+
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance; //Firebase এর সাথে সংযোগ
   late CollectionReference studentCollectionRef = firebaseFirestore.collection('students');
   List<Student> studentList = [];
 
 
-  Future <void> getStudentData()  async {
+  Future <void> getStudentData()  async { //getStudentData() — One-time fetch (pull-based)
      studentList.clear();
      final QuerySnapshot result =
      await studentCollectionRef.get();
      print(result.size);
      for (QueryDocumentSnapshot element in result.docs) {
-       print(element.data());
-       print(element.get('name'));
-       Student student = Student(element.get('name'), int.tryParse( element.get('roll').toString())?? 0);
+       Student student = Student(element.get('name'),
+           int.tryParse( element.get('roll').toString())?? 0);
        studentList.add(student);
      }
      if (mounted) {
@@ -47,7 +47,7 @@ class StudentListState extends State<StudentList> {
   @override
   void initState() {
     super.initState();
-    getStudentData();
+    //getStudentData();
   }
 
 
@@ -64,17 +64,42 @@ class StudentListState extends State<StudentList> {
         },
 
 
-        child: ListView.builder(
-          itemCount: studentList.length,
-          itemBuilder: (context, index) {
+        child: StreamBuilder( //StreamBuilder সেই stream শুনতে থাকে এবং UI auto-rebuild করে।
+          stream: studentCollectionRef.snapshots(),
+          builder: (context,AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {//waiting গোল গোল লোডিং চাকা
+              //Firestore-এ যখনই data change হয় (add/update/delete), Flutter automatically নতুন snapshot পাঠায়।
+              //.snapshots() একটা infinite stream তৈরি করে।
+              return const Center(
+                child: CircularProgressIndicator(),//// লোডিং চাকা
+              );
+            }
 
-            return  ListTile(
-              leading: CircleAvatar(
-                child: Text(studentList[index].roll.toString()),
-              ),
-              title: Text(studentList[index].name),
-            );
-          },
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(snapshot.error.toString()),
+              );
+            }
+            if (snapshot.hasData) {
+              studentList.clear();
+              for (QueryDocumentSnapshot element in snapshot.data!.docs) {
+                Student student = Student(element.get('name'),
+                    int.tryParse( element.get('roll').toString())?? 0);
+                studentList.add(student);
+              }
+              return ListView.builder(
+                  itemCount: studentList.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: CircleAvatar(
+                        child: Text(studentList[index].roll.toString()),
+                      ),
+                      title: Text(studentList[index].name),
+                    );
+                  });
+            }
+            return const SizedBox();
+          }
         ),
       ),
 
@@ -82,8 +107,8 @@ class StudentListState extends State<StudentList> {
         child: const Icon(Icons.add),
         onPressed: () {
           studentCollectionRef.add({
-            'name' : 'Abrar',
-            'roll' : 4
+            'name' : 'Shahrear',
+            'roll' : 11
           });
         },
       ), // FloatingActionButton

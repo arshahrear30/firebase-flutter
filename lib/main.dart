@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_flutter/firebase_messaging_service.dart';
+import 'package:firebase_flutter/firebase_student_app.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
@@ -9,11 +10,8 @@ Future<void> main() async {
   await FirebaseMessagingService().initialize();
   await FirebaseMessagingService().getFCMToken();
   await FirebaseMessagingService().subscribeToTopic("the-new_boston-myself");
-  await FirebaseMessagingService().onRefresh((token) {
-    //TODO -- send to API
-  });
+  await FirebaseMessagingService().onRefresh((token) {});
 
-
-  //runApp(const FirebaseMessagingService());
+  runApp(const FirebaseStudentApp());
 
 }
