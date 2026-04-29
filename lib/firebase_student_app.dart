@@ -25,6 +25,8 @@ class StudentListState extends State<StudentList> { //StudentListState -- Data F
 
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance; //Firebase এর সাথে সংযোগ
   late CollectionReference studentCollectionRef = firebaseFirestore.collection('students');
+  final TextEditingController nameTEController = TextEditingController();
+  final TextEditingController rollTEController = TextEditingController();
   List<Student> studentList = [];
 
 
@@ -35,7 +37,7 @@ class StudentListState extends State<StudentList> { //StudentListState -- Data F
      print(result.size);
      for (QueryDocumentSnapshot element in result.docs) {
        Student student = Student(element.get('name'),
-           int.tryParse( element.get('roll').toString())?? 0);
+           int.tryParse( element.get('roll').toString())?? 0,element.id);
        studentList.add(student);
      }
      if (mounted) {
@@ -65,7 +67,7 @@ class StudentListState extends State<StudentList> { //StudentListState -- Data F
 
 
         child: StreamBuilder( //StreamBuilder সেই stream শুনতে থাকে এবং UI auto-rebuild করে।
-          stream: studentCollectionRef.snapshots(),
+          stream: studentCollectionRef.orderBy('roll',descending: false ).snapshots(),
           builder: (context,AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {//waiting গোল গোল লোডিং চাকা
               //Firestore-এ যখনই data change হয় (add/update/delete), Flutter automatically নতুন snapshot পাঠায়।
@@ -75,16 +77,16 @@ class StudentListState extends State<StudentList> { //StudentListState -- Data F
               );
             }
 
-            if (snapshot.hasError) {
+            if (snapshot.hasError) { //snapshot can change push data immediately
               return Center(
                 child: Text(snapshot.error.toString()),
               );
             }
-            if (snapshot.hasData) {
+            if (snapshot.hasData) { //when i click on snapshot .it will instant rebuild -- remove and update UI so fast
               studentList.clear();
               for (QueryDocumentSnapshot element in snapshot.data!.docs) {
                 Student student = Student(element.get('name'),
-                    int.tryParse( element.get('roll').toString())?? 0);
+                    int.tryParse( element.get('roll').toString())?? 0,element.id);
                 studentList.add(student);
               }
               return ListView.builder(
@@ -95,6 +97,37 @@ class StudentListState extends State<StudentList> { //StudentListState -- Data F
                         child: Text(studentList[index].roll.toString()),
                       ),
                       title: Text(studentList[index].name),
+
+
+                      trailing: Wrap(
+                        children: [
+
+
+
+                          IconButton(onPressed: () {
+                            studentCollectionRef
+                                .doc(studentList[index].id)
+                                .update({
+                              'name' : nameTEController.text.trim(),
+                              'roll' : int.tryParse(rollTEController.text.trim()) ?? 0,
+                            }).then((value) {
+                            });
+                          }, icon: const Icon(Icons.edit),),
+
+
+
+                          IconButton(onPressed: () {
+                            studentCollectionRef
+                                .doc(studentList[index].id)
+                                .delete();
+                          }, icon: const Icon(Icons.delete),),
+
+
+
+                        ],
+                      ), // Wrap
+
+
                     );
                   });
             }
@@ -106,20 +139,49 @@ class StudentListState extends State<StudentList> { //StudentListState -- Data F
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          studentCollectionRef.add({
-            'name' : 'Shahrear',
-            'roll' : 11
-          });
+          showAddStudentBottomSheet();
         },
       ), // FloatingActionButton
 
     );
   }
+  //------------
+  void showAddStudentBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Column(
+            children: [
+              TextField(
+                controller: nameTEController,
+              ), // TextField
+              TextField(
+                controller: rollTEController,
+                keyboardType: TextInputType.number,
+              ), // TextField
+              ElevatedButton(
+                  onPressed: () async{
+                    await studentCollectionRef.add({
+                      'name' : nameTEController.text.trim(),
+                      'roll' : int.tryParse(rollTEController.text.trim()) ?? 0,
+                    });
+                    nameTEController.clear();
+                    rollTEController.clear();
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Add')), // ElevatedButton
+            ],
+          ); // Column
+        }
+    );
+  }
+  //------------
 }
 
 class Student {
   final String name;
   final int roll;
+  final String id;
 
-  Student(this.name, this.roll);
+  Student(this.name, this.roll, this.id);
 }

@@ -80,7 +80,10 @@ cloud firestore Flutterfire :: https://firebase.flutter.dev/docs/firestore/usage
 
 এই context গুলা পড়ে পড়ে শিখলে সবচেয়ে better :❇️:  https://firebase.google.com/docs/firestore/query-data/listen
 
+Firestore-এ document id maintain করার জন্য একটা pub.get আছে ((((( uuid: ^4.5.3 )))))
+ধরো প্রতিবার তো আমি নিজে নিজে id বানাইতে পারমু না .. তখন এইটা use করতে হইবো।
 
+Search করতে চাইলে use queries করতে হইবো .. //firebase.google.com-এ দেখো।
 
 ## FCM firebase cloud messaging
 
